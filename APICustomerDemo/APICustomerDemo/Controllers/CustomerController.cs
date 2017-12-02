@@ -2,18 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using APICustomerDemo.Models;
+using APICustomerDemo.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APICustomerDemo.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class CustomerController : Controller
     {
+        private readonly IKundeService _kundeservice;
+
+        public CustomerController(IKundeService kundeservice)
+        {
+            _kundeservice = kundeservice;
+        }
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Kunde> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _kundeservice.GetKundeList().Where(x=>x.ValidFromDttm > new DateTime(2010,12,31) && x.KundeAns!=null);
         }
 
         // GET api/values/5

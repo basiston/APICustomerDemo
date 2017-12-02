@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using APICustomerDemo.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ namespace APICustomerDemo
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
 
         public IConfiguration Configuration { get; }
@@ -24,6 +26,7 @@ namespace APICustomerDemo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddScoped<IKundeService, KundeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
