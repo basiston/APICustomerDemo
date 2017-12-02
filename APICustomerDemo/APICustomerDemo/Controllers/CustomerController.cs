@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using APICustomerDemo.Models;
 using APICustomerDemo.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +14,15 @@ namespace APICustomerDemo.Controllers
         public CustomerController(IKundeService kundeservice)
         {
             _kundeservice = kundeservice;
-           
         }
+
         // GET api/Customer
         [HttpGet]
-        public  IEnumerable<Kunde> Get()
+        public IActionResult Get()
         {
-            return _kundeservice.GetKundeList().Where(x => x.ValidFromDttm > new DateTime(2010, 12, 31) && x.KundeAns != null);
+            var kundelist = _kundeservice.GetKundeList()
+                .Where(x => x.ValidFromDttm > new DateTime(2010, 12, 31) && x.KundeAns != null);
+            return Ok(kundelist);
         }
 
         // GET api/Customer/5
@@ -37,6 +37,5 @@ namespace APICustomerDemo.Controllers
         public void Post(Kunde kunde)
         {
         }
-        
     }
 }

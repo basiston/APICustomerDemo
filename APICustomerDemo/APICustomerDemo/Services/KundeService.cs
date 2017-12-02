@@ -13,6 +13,10 @@ namespace APICustomerDemo.Services
         private const string Filepath =
             @"C:\\Users\\Basiston\\Desktop\\DAT-3447_Anonymisert_kundetabell_historisert_RS161212_v1.xls";
 
+
+        //private const string Filepath =
+        //    "../Content/DAT-3447_Anonymisert_kundetabell_historisert_RS161212_v1.xls";
+
         /// <summary>
         ///     Get customer details from excel
         /// </summary>
