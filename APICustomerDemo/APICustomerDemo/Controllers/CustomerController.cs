@@ -16,37 +16,27 @@ namespace APICustomerDemo.Controllers
         public CustomerController(IKundeService kundeservice)
         {
             _kundeservice = kundeservice;
+           
         }
-        // GET api/values
+        // GET api/Customer
         [HttpGet]
-        public IEnumerable<Kunde> Get()
+        public  IEnumerable<Kunde> Get()
         {
-            return _kundeservice.GetKundeList().Where(x=>x.ValidFromDttm > new DateTime(2010,12,31) && x.KundeAns!=null);
+            return _kundeservice.GetKundeList().Where(x => x.ValidFromDttm > new DateTime(2010, 12, 31) && x.KundeAns != null);
         }
 
-        // GET api/values/5
+        // GET api/Customer/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
+        // Put api/Customer
+        [HttpPut]
+        public void Post(Kunde kunde)
         {
         }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
     }
 }
