@@ -14,28 +14,31 @@ namespace Repository
         public List<Kunde> GetCustomerList()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            var fs = File.Open(Filepath, FileMode.Open, FileAccess.Read);
-            var reader = ExcelReaderFactory.CreateReader(fs);       
-            var kundelist = new List<Kunde>();
-           
-            var i = 0;
-            while (reader.Read())
+            using (var fs = File.Open(Filepath, FileMode.Open, FileAccess.Read))
             {
-                i++;
-                if (i == 1) continue;
-                kundelist.Add(new Kunde
+                var reader = ExcelReaderFactory.CreateReader(fs);
+                var kundelist = new List<Kunde>();
+
+                var i = 0;
+                while (reader.Read())
                 {
-                    KundeNrAnomymisert = Convert.ToString(reader.GetValue(0)),
-                    ValidFromDttm = Convert.ToDateTime(reader.GetValue(1)),
-                    PostNr = Convert.ToString(reader.GetValue(2)),
-                    PostSted = Convert.ToString(reader.GetValue(3)),
-                    KundeAns = Convert.ToString(reader.GetValue(4)),
-                    BankId = Convert.ToInt32(reader.GetValue(5)),
-                    SamtykkeForsikring = Convert.ToString(reader.GetValue(6)),
-                    SamtykkeBank = Convert.ToString(reader.GetValue(7))
-                });
+                    i++;
+                    if (i == 1) continue;
+                    kundelist.Add(new Kunde
+                    {
+                        KundeNrAnomymisert = Convert.ToString(reader.GetValue(0)),
+                        ValidFromDttm = Convert.ToDateTime(reader.GetValue(1)),
+                        PostNr = Convert.ToString(reader.GetValue(2)),
+                        PostSted = Convert.ToString(reader.GetValue(3)),
+                        KundeAns = Convert.ToString(reader.GetValue(4)),
+                        BankId = Convert.ToInt32(reader.GetValue(5)),
+                        SamtykkeForsikring = Convert.ToString(reader.GetValue(6)),
+                        SamtykkeBank = Convert.ToString(reader.GetValue(7))
+                    });
+                }
+
+                return kundelist;
             }
-            return kundelist;
         }
 
         public IEnumerable<Kunde> GetCustomersListWithCriteria()

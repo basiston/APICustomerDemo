@@ -17,5 +17,19 @@ namespace Repository.Test
 
 
         }
+
+
+        [TestMethod]
+        public void CustomerWithCriteriaNotNull()
+        {
+            //Arrange
+            var rep = new CustomerRepository();
+            //Act
+            var actual = rep.GetCustomersListWithCriteria();
+            //Assert
+            Assert.IsNotNull(actual);
+
+
+        }
     }
 }
