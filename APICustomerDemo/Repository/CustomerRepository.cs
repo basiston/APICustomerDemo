@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using ExcelDataReader;
 
 namespace Repository
 {
-    public class KundeRepository : IKundeRepository
+    public class CustomerRepository : ICustomerRepository
     {
         private const string Filepath =
             @"C:\\Users\\Basiston\\Desktop\\DAT-3447_Anonymisert_kundetabell_historisert_RS161212_v1.xls";
-        public List<Kunde> GetKundeList()
+        public List<Kunde> GetCustomerList()
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             var fs = File.Open(Filepath, FileMode.Open, FileAccess.Read);
-            var reader = ExcelReaderFactory.CreateReader(fs);
+            var reader = ExcelReaderFactory.CreateReader(fs);       
             var kundelist = new List<Kunde>();
-
+           
             var i = 0;
             while (reader.Read())
             {
@@ -34,6 +36,16 @@ namespace Repository
                 });
             }
             return kundelist;
+        }
+
+        public IEnumerable<Kunde> GetCustomersListWithCriteria()
+        {
+            return GetCustomerList().Where(x => x.ValidFromDttm > new DateTime(2010,12,31) && x.KundeAns != null);
+        }
+
+        public Kunde GetCustomerById(string customerId)
+        {
+            return GetCustomerList().SingleOrDefault(x => x.KundeNrAnomymisert == customerId);
         }
     }
 }

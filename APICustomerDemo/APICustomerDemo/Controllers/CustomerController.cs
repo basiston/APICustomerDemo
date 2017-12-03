@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 
@@ -8,30 +10,33 @@ namespace APICustomerDemo.Controllers
     [Route("api/[controller]")]
     public class CustomerController : Controller
     {
-        private readonly IKundeRepository _kundeRepository;
+        private readonly ICustomerRepository _customerRepository;
 
-        public CustomerController(IKundeRepository kundeRepository)
+        public CustomerController(ICustomerRepository customerRepository)
         {
-            _kundeRepository = kundeRepository;
+            _customerRepository = customerRepository;
         }
+
 
         // GET api/Customer
         [HttpGet]
         public IActionResult Get()
         {
-            var kundelist = _kundeRepository.GetKundeList()
-                .Where(x => x.ValidFromDttm > new DateTime(2010, 12, 31) && x.KundeAns != null);
+            var kundelist = _customerRepository.GetCustomersListWithCriteria();
             return Ok(kundelist);
+
         }
+
 
         // Put api/Customer
         [HttpPut]
         public IActionResult Put(string kundeId, string bankSamtykke)
         {
-            var kunde = _kundeRepository.GetKundeList().SingleOrDefault(x => x.KundeNrAnomymisert == kundeId);
+            var kunde = _customerRepository.GetCustomerById(kundeId);
             if (kunde == null)
                 return BadRequest();
             kunde.SamtykkeBank = bankSamtykke;
+            //TO:DO update the customer record
             return Ok(kunde);
         }
     }
