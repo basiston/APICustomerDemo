@@ -1,26 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using APICustomerDemo.Models;
+using System.Text;
 using ExcelDataReader;
 
-namespace APICustomerDemo.Services
+namespace Repository
 {
-    public class KundeService:IKundeService
+    public class KundeRepository : IKundeRepository
     {
         private const string Filepath =
             @"C:\\Users\\Basiston\\Desktop\\DAT-3447_Anonymisert_kundetabell_historisert_RS161212_v1.xls";
-
-
-        //private const string Filepath =
-        //    "../Content/DAT-3447_Anonymisert_kundetabell_historisert_RS161212_v1.xls";
-
-        /// <summary>
-        ///     Get customer details from excel
-        /// </summary>
-        /// <returns></returns>
         public List<Kunde> GetKundeList()
         {
             var fs = File.Open(Filepath, FileMode.Open, FileAccess.Read);
