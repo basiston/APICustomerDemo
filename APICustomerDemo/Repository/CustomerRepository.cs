@@ -4,11 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using ExcelDataReader;
+using Repository.Models;
 
 namespace Repository
 {
     public class CustomerRepository : ICustomerRepository
     {
+
+        /// <summary>
+        /// File path of excel sheet, change this with file path of location.
+        /// </summary>
         private const string Filepath =
                 @"C:\\Users\\basiston\\Source\\Repos\\APICustomerDemo\\APICustomerDemo\\APICustomerDemo\\Content\\DAT-3447_Anonymisert_kundetabell_historisert_RS161212_v1.xls";
 

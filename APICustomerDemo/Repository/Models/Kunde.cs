@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Repository
+namespace Repository.Models
 {
     public class Kunde
     {
