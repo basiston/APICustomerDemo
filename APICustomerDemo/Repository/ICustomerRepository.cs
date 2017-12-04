@@ -7,7 +7,8 @@ namespace Repository
     public interface ICustomerRepository
     {
         List<Kunde> GetCustomerList();
-        IEnumerable<Kunde> GetCustomersListWithCriteria();
+        List<Kunde> GetCustomersListWithCriteria();
         Kunde GetCustomerById(string customerId);
+        Kunde UpdateCustomer(string customerId, string bankAgreement);
     }
 }

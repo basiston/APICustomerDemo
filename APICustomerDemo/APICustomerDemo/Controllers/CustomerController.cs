@@ -20,11 +20,10 @@ namespace APICustomerDemo.Controllers
 
         // GET api/Customer
         [HttpGet]
-        public IActionResult Get()
+        public IEnumerable<Kunde> Get()
         {
-            var kundelist = _customerRepository.GetCustomersListWithCriteria();
-            return Ok(kundelist);
-
+           return  _customerRepository.GetCustomersListWithCriteria();
+          
         }
 
 
@@ -32,11 +31,11 @@ namespace APICustomerDemo.Controllers
         [HttpPut]
         public IActionResult Put(string kundeId, string bankSamtykke)
         {
-            var kunde = _customerRepository.GetCustomerById(kundeId);
+            var kunde = _customerRepository.UpdateCustomer(kundeId,bankSamtykke);
             if (kunde == null)
-                return BadRequest();
-            kunde.SamtykkeBank = bankSamtykke;
-            //TO:DO update the customer record
+                return NotFound();
+            //TO:DO update the customer record in reality
+            //for now i am returning just the object back
             return Ok(kunde);
         }
     }

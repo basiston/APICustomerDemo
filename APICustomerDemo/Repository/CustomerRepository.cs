@@ -10,9 +10,11 @@ namespace Repository
     public class CustomerRepository : ICustomerRepository
     {
         private const string Filepath =
-            @"C:\\Users\\Basiston\\Desktop\\DAT-3447_Anonymisert_kundetabell_historisert_RS161212_v1.xls";
+                @"C:\\Users\\basiston\\Source\\Repos\\APICustomerDemo\\APICustomerDemo\\APICustomerDemo\\Content\\DAT-3447_Anonymisert_kundetabell_historisert_RS161212_v1.xls";
+
         public List<Kunde> GetCustomerList()
         {
+            
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             using (var fs = File.Open(Filepath, FileMode.Open, FileAccess.Read))
             {
@@ -41,14 +43,23 @@ namespace Repository
             }
         }
 
-        public IEnumerable<Kunde> GetCustomersListWithCriteria()
+        public List<Kunde> GetCustomersListWithCriteria()
         {
-            return GetCustomerList().Where(x => x.ValidFromDttm > new DateTime(2010,12,31) && x.KundeAns != null);
+            return GetCustomerList().Where(x => x.ValidFromDttm > new DateTime(2010,12,31) && x.KundeAns != null).ToList();
         }
 
         public Kunde GetCustomerById(string customerId)
         {
             return GetCustomerList().SingleOrDefault(x => x.KundeNrAnomymisert == customerId);
+        }
+
+        public Kunde UpdateCustomer(string customerId, string bankAgreement)
+        {
+            var customer = GetCustomerById(customerId);
+            if (customer == null)
+                return null;
+            customer.SamtykkeBank = bankAgreement;
+            return customer;
         }
     }
 }
