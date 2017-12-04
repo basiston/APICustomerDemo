@@ -27,6 +27,17 @@ namespace APICustomerDemo.Controllers
           
         }
 
+        [HttpGet("{kundeId}", Name = "GetById")]
+        public IActionResult GetById(string kundeId)
+        {
+            var kunde = _customerRepository.GetCustomerById(kundeId);
+            if (kunde == null)
+                return NotFound();
+            else
+                return Ok(kunde);
+
+        }
+
 
         // Put api/Customer
         [HttpPut]
