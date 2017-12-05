@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using Repository.Models;
@@ -23,8 +22,21 @@ namespace APICustomerDemo.Controllers
         [HttpGet]
         public IEnumerable<Kunde> Get()
         {
-           return  _customerRepository.GetCustomersListWithCriteria();
-          
+            //Add request to a queue and serve the webrequest as First in first out way
+            RequestQueue.Queue.Enqueue(Guid.NewGuid());
+            var kundelist = new List<Kunde>();
+
+            var s = RequestQueue.Queue;
+            //run a foreach and serve as FIFO way
+            foreach (var queuenr in RequestQueue.Queue)
+            {
+                kundelist = _customerRepository.GetCustomersListWithCriteria();
+                Thread.Sleep(10000);
+                var exitqueuenr = queuenr;
+                //Delete the Queue nr after response is served. 
+                RequestQueue.Queue.TryDequeue(out exitqueuenr);
+            }
+            return kundelist;
         }
 
         [HttpGet("{kundeId}", Name = "GetById")]
@@ -33,9 +45,7 @@ namespace APICustomerDemo.Controllers
             var kunde = _customerRepository.GetCustomerById(kundeId);
             if (kunde == null)
                 return NotFound();
-            else
-                return Ok(kunde);
-
+            return Ok(kunde);
         }
 
 
@@ -43,7 +53,7 @@ namespace APICustomerDemo.Controllers
         [HttpPut]
         public IActionResult Put(string kundeId, string bankSamtykke)
         {
-            var kunde = _customerRepository.UpdateCustomer(kundeId,bankSamtykke);
+            var kunde = _customerRepository.UpdateCustomer(kundeId, bankSamtykke);
             if (kunde == null)
                 return NotFound();
             //TO:DO update the customer record in reality
